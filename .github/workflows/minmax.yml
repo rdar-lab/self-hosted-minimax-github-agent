@@ -92,8 +92,13 @@ jobs:
           def e(key):
               return os.environ.get(key, "")
 
+          GITHUB_RULE = (
+              "IMPORTANT: For ALL GitHub operations (posting comments, creating PRs, etc.) "
+              "you MUST use the mcp__github__* tools. Never use gh CLI or curl for GitHub API calls.\n\n"
+          )
+
           if event == "issue_comment":
-              prompt = (
+              prompt = GITHUB_RULE + (
                   f"Repository: {repo}\n"
                   f"Issue #{e('ISSUE_NUMBER')}: {e('ISSUE_TITLE')}\n"
                   f"Issue body:\n{e('ISSUE_BODY')}\n\n"
@@ -107,7 +112,7 @@ jobs:
                   f"6. Post a comment on issue #{e('ISSUE_NUMBER')} in repo {repo} using mcp__github__create_issue_comment with a summary and a link to the PR."
               )
           elif event == "pull_request_review_comment":
-              prompt = (
+              prompt = GITHUB_RULE + (
                   f"Repository: {repo}\n"
                   f"PR #{e('PR_NUMBER')}: {e('PR_TITLE')}\n"
                   f"PR description:\n{e('PR_BODY')}\n\n"
@@ -116,7 +121,7 @@ jobs:
                   f"using mcp__github__create_issue_comment summarizing what was done and which files were changed."
               )
           elif event == "pull_request_review":
-              prompt = (
+              prompt = GITHUB_RULE + (
                   f"Repository: {repo}\n"
                   f"PR #{e('PR_NUMBER')}: {e('PR_TITLE')}\n"
                   f"PR description:\n{e('PR_BODY')}\n\n"
@@ -125,7 +130,7 @@ jobs:
                   f"using mcp__github__create_issue_comment summarizing what was done and which files were changed."
               )
           elif event == "pull_request":
-              prompt = (
+              prompt = GITHUB_RULE + (
                   f"Repository: {repo}\n"
                   f"PR #{e('PR_NUMBER')}: {e('PR_TITLE')}\n"
                   f"PR description:\n{e('PR_BODY')}\n\n"
@@ -167,8 +172,8 @@ jobs:
           claude \
             --model MiniMax-M2.7 \
             --max-turns 200 \
-            --allowedTools "Read,Write,Edit,MultiEdit,Glob,Grep,LS,Bash(git:*),Bash(find:*),mcp__github__create_pull_request,mcp__github__list_pull_requests,mcp__github__get_pull_request,mcp__github__update_pull_request,mcp__github__create_issue_comment" \
-            -p "$PROMPT"
+            --allowedTools "Read,Write,Edit,MultiEdit,Glob,Grep,LS,Bash(git:*),Bash(find:*),Bash(gh:*),mcp__github__create_pull_request,mcp__github__list_pull_requests,mcp__github__get_pull_request,mcp__github__update_pull_request,mcp__github__create_issue_comment" \
+            -p "$PROMPT" | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Safety net — commit and push any uncommitted changes
         if: always()
