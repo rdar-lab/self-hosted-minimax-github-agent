@@ -98,8 +98,13 @@ jobs:
                   f"Issue #{e('ISSUE_NUMBER')}: {e('ISSUE_TITLE')}\n"
                   f"Issue body:\n{e('ISSUE_BODY')}\n\n"
                   f"User comment:\n{e('COMMENT_BODY')}\n\n"
-                  f"After completing the task, post a comment on issue #{e('ISSUE_NUMBER')} in repo {repo} "
-                  f"using mcp__github__create_issue_comment summarizing what was done and linking any PR created."
+                  f"Instructions:\n"
+                  f"1. Analyze the issue and create a branch for the fix.\n"
+                  f"2. Write an IMPLEMENTATION_PLAN.md describing your approach.\n"
+                  f"3. Commit and push IMPLEMENTATION_PLAN.md to the branch.\n"
+                  f"4. Open a draft PR using mcp__github__create_pull_request with the plan in the description and '@minmax' in the PR body.\n"
+                  f"5. Do NOT implement anything yet — plan only.\n"
+                  f"6. Post a comment on issue #{e('ISSUE_NUMBER')} in repo {repo} using mcp__github__create_issue_comment with a summary and a link to the PR."
               )
           elif event == "pull_request_review_comment":
               prompt = (
@@ -121,16 +126,15 @@ jobs:
               )
           elif event == "pull_request":
               prompt = (
-                  "Implement the plan described in the PR description. "
-                  "Follow the instructions in CLAUDE.md. "
-                  "CRITICAL: after every single file you create or modify, "
-                  "immediately run git add and git commit for that file before touching anything else.\n\n"
                   f"Repository: {repo}\n"
                   f"PR #{e('PR_NUMBER')}: {e('PR_TITLE')}\n"
                   f"PR description:\n{e('PR_BODY')}\n\n"
-                  f"After pushing all commits, post a comment on PR #{e('PR_NUMBER')} in repo {repo} "
-                  f"using mcp__github__create_issue_comment summarizing what was implemented, "
-                  f"which files were changed, and the branch name."
+                  f"Instructions:\n"
+                  f"1. Implement the plan described in the PR description.\n"
+                  f"2. CRITICAL git discipline: after every single file you create or modify, immediately run `git add <file> && git commit -m '<message>'`. ONE file = ONE commit. Never batch multiple files.\n"
+                  f"3. After every 3 commits, run `git push`.\n"
+                  f"4. If you are about to run out of turns, stop implementing, commit and push everything completed so far, then stop.\n"
+                  f"5. After pushing all commits, post a comment on PR #{e('PR_NUMBER')} in repo {repo} using mcp__github__create_issue_comment summarizing what was implemented, which files were changed, and the branch name."
               )
           else:
               prompt = ""
