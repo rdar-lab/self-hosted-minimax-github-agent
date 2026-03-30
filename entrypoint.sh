@@ -3,8 +3,8 @@ set -euo pipefail
 
 : "${GITHUB_URL:?GITHUB_URL is required (e.g. https://github.com/owner/repo)}"
 
-RUNNER_NAME="${RUNNER_NAME:-minmax-runner}"
-RUNNER_LABELS="${RUNNER_LABELS:-self-hosted-minmax,minmax}"
+RUNNER_NAME="${RUNNER_NAME:-minimax-runner}"
+RUNNER_LABELS="${RUNNER_LABELS:-self-hosted-minimax,minimax}"
 
 cd /home/runner/actions-runner
 

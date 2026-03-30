@@ -1,4 +1,4 @@
-# self-hosted-minmax-github-agent
+# self-hosted-minimax-github-agent
 Combining MiniMax M2.7 (via Claude Code CLI) into a Self-Hosted GitHub Action Runner
 
 ## About this
@@ -30,7 +30,7 @@ No GitHub Actions credits or GitHub Copilot credits are consumed. The runner run
     ```
     The runner appears under repository **Settings → Actions → Runners** once it is online.
 
-4. Copy `.github/workflows/minmax.yml` and `CLAUDE.md` from this repository into your target repository, then commit and push.
+4. Copy `.github/workflows/minimax.yml` and `CLAUDE.md` from this repository into your target repository, then commit and push.
 
 5. Optional: add `AGENTS.md` with project-specific conventions for the agent.
 
@@ -51,14 +51,14 @@ No GitHub Actions credits or GitHub Copilot credits are consumed. The runner run
 
 3. Add your MiniMax API key as a GitHub secret (`MINIMAX_API_KEY`) as described in step 1 of Option A.
 
-4. Copy `.github/workflows/minmax.yml` and `CLAUDE.md` into your target repository and commit and push.
+4. Copy `.github/workflows/minimax.yml` and `CLAUDE.md` into your target repository and commit and push.
 
 5. Optional: Add `AGENTS.md` with project-specific information for the agent.
 
 6. Working on any issue requires 2 steps:
-    - Comment on the issue with `@minmax` in the body. This triggers the workflow and creates a draft PR with an implementation plan (`IMPLEMENTATION_PLAN.md`). Example: `"@minmax please create an implementation plan for this issue and create a branch for it."`
-    - Open the draft PR and add an `@minmax` comment or ensure `@minmax` is in the PR body. This triggers the implementation. Example: `"@minmax please implement the plan in IMPLEMENTATION_PLAN.md and commit frequently."`
-    - Once implementation is done, review the code. Leave inline comments on any lines you want addressed, then submit the review with a comment containing `@minmax please see comments`.
+    - Comment on the issue with `@minimax` in the body. This triggers the workflow and creates a draft PR with an implementation plan (`IMPLEMENTATION_PLAN.md`). Example: `"@minimax please create an implementation plan for this issue and create a branch for it."`
+    - Open the draft PR and add an `@minimax` comment or ensure `@minimax` is in the PR body. This triggers the implementation. Example: `"@minimax please implement the plan in IMPLEMENTATION_PLAN.md and commit frequently."`
+    - Once implementation is done, review the code. Leave inline comments on any lines you want addressed, then submit the review with a comment containing `@minimax please see comments`.
 
 ## How it works
 
@@ -84,7 +84,7 @@ The workflow restricts the agent to a specific set of tools for safety:
 - **Allowed:** creating and reading GitHub pull requests via the GitHub MCP tool
 - **Not allowed:** arbitrary shell commands, running tests, installing packages, or any other system operations
 
-If your project requires the agent to run tests or build commands, extend the `--allowedTools` list in `minmax.yml`.
+If your project requires the agent to run tests or build commands, extend the `--allowedTools` list in `minimax.yml`.
 
 ## Timeout
 
@@ -95,4 +95,4 @@ Each workflow run has a **120-minute hard timeout** and a **200-turn limit**. Fo
 The `CLAUDE.md` file is automatically read by the Claude Code CLI at the start of every session. It governs two key behaviors:
 
 - **Git discipline:** In CI, the agent commits after every individual file change and pushes every 3 commits, ensuring progress is saved continuously.
-- **Phase separation:** When triggered from an issue comment, the agent only creates a plan and opens a draft PR — it does not implement anything yet. Implementation only begins when triggered from the PR opened event (when `@minmax` is in the PR body).
+- **Phase separation:** When triggered from an issue comment, the agent only creates a plan and opens a draft PR — it does not implement anything yet. Implementation only begins when triggered from the PR opened event (when `@minimax` is in the PR body).
