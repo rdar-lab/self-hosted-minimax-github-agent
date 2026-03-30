@@ -53,8 +53,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
-# ── Claude Code CLI (configured to use MiniMax API) ───────────────────────────
-RUN npm install -g @anthropic-ai/claude-code
+# ── OpenCode CLI (configured to use MiniMax API) ─────────────────────────────
+RUN npm install -g opencode-ai
 
 # ── Runner user ────────────────────────────────────────────────────────────────
 RUN useradd -m -s /bin/bash runner \
