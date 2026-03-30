@@ -29,7 +29,8 @@ jobs:
       - name: Configure OpenCode with MiniMax provider
         run: |
           mkdir -p ~/.config/opencode
-          echo '{"providers":{"minimax":{"provider":"minimax","name":"MiniMax","apiKey":"${{ secrets.MINIMAX_API_KEY }}","baseURL":"https://api.minimax.io/anthropic/v1"}}}' > ~/.config/opencode/opencode.json
+          rm -rf ~/.local/share/opencode
+          echo '{"$schema": "https://opencode.ai/config.json", "provider":{"minimax":{"npm": "@ai-sdk/anthropic",  "options": { "baseURL": "https://api.minimax.io/anthropic/v1", "apiKey":"${{ secrets.MINIMAX_API_KEY }}" }, "models": { "MiniMax-M2.7": { "name": "MiniMax-M2.7" } } } } }' > ~/.config/opencode/opencode.json
 
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
@@ -37,6 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: minimax/MiniMax-M2.7
+          use_github_token: true
       - name: Safety net — commit and push any uncommitted changes
         if: always()
         run: |

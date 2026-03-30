@@ -9,6 +9,11 @@ No GitHub Actions credits or GitHub Copilot credits are consumed. The runner run
 
 ## How to deploy
 
+### All Options
+
+Install the OpenCode GitHub Opencode Application on your repository.
+https://github.com/apps/opencode-agent
+
 ### Option A — Docker (recommended)
 
 **Prerequisites:** Docker and Docker Compose installed on the host machine.
