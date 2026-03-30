@@ -29,7 +29,7 @@ jobs:
       - name: Configure OpenCode with MiniMax provider
         run: |
           mkdir -p ~/.config/opencode
-          echo '{"providers":{"minimax":{"provider":"minimax","name":"MiniMax","apiKeyEnv":"MINIMAX_API_KEY","baseURL":"https://api.minimax.io/anthropic/v1"}}}' > ~/.config/opencode/opencode.json
+          echo '{"providers":{"minimax":{"provider":"minimax","name":"MiniMax","apiKey":"'"$MINIMAX_API_KEY"'","baseURL":"https://api.minimax.io/anthropic/v1"}}}' > ~/.config/opencode/opencode.json
 
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
