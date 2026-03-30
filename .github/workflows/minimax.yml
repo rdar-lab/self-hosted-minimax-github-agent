@@ -71,5 +71,14 @@ jobs:
         if: always()
         run: |
           git add -A
-          git diff --cached --quiet || git commit -m "chore: commit remaining changes from claude session"
-          git push || true
+          if ! git diff --cached --quiet; then
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              git commit -m "chore: commit remaining changes from claude session"
+              git push origin HEAD:${{ github.head_ref }}
+            else
+              BRANCH_NAME="claude/work-${{ github.run_id }}"
+              git checkout -b "$BRANCH_NAME"
+              git commit -m "chore: commit remaining changes from claude session"
+              git push origin HEAD:refs/heads/"$BRANCH_NAME"
+            fi
+          fi
