@@ -26,10 +26,15 @@ jobs:
           fetch-depth: 1
           persist-credentials: false
 
+      - name: Configure OpenCode with MiniMax provider
+        run: |
+          mkdir -p ~/.config/opencode
+          echo '{"providers":{"minimax":{"provider":"minimax","name":"MiniMax","apiKeyEnv":"MINIMAX_API_KEY","baseURL":"https://api.minimax.io/anthropic/v1"}}}' > ~/.config/opencode/opencode.json
+
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
+          MINIMAX_API_KEY: ${{ secrets.MINIMAX_API_KEY }}
           ANTHROPIC_BASE_URL: https://api.minimax.io/anthropic/v1
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
