@@ -34,3 +34,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           model: minimax/MiniMax-M2.7
+      - name: Safety net — commit and push any uncommitted changes
+        if: always()
+        run: |
+          git add -A
+          git diff --cached --quiet || git commit -m "chore: commit remaining changes from claude session"
+          git push || true
